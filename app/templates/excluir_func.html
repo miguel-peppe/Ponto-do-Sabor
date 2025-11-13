@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Excluir Funcionário</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 40px;
+        }
+
+        .container {
+            background-color: white;
+            max-width: 400px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            background-color: #c0392b;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Excluir Funcionário</h2>
+    <form action="/excluir_funcionario" method="POST">
+        <label for="cpf">Id do Funcionário:</label>
+        <input type="text" id="id" name="id" maxlength="11" required>
+
+        <button type="submit">Excluir</button>
+    </form>
+</div>
+
+</body>
+</html>

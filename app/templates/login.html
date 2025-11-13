@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ecf0f1;
+            padding: 50px;
+        }
+
+        .login-container {
+            background-color: white;
+            max-width: 350px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            margin-top: 25px;
+            width: 100%;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #34495e;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Login</h2>
+
+    {% if erro %}
+        <div class="error-message">{{ erro }}</div>
+    {% endif %}
+
+    <form action="/login" method="POST">
+        <label for="cpf">CPF:</label>
+        <input type="text" name="cpf" id="cpf" maxlength="14"
+               oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+
+        <label for="senha">Senha:</label>
+        <input type="password" name="senha" id="senha" required>
+
+        <button type="submit">Entrar</button>
+    </form>
+</div>
+
+</body>
+</html>

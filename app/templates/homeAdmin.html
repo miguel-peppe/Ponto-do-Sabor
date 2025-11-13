@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <h1>Bem-vindo!  {{ current_user }}</h1>
+    <a href="{{ url_for('cadastrar') }}">Cadastrar Funcionário</a>
+    <a href="{{ url_for('excluir') }}">Excluir</a>
+    <a href="{{ url_for('listar') }}">Listar</a>
+</body>
+</html>

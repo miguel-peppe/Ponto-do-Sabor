@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Funcionários</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 40px;
+        }
+
+        .container {
+            background-color: white;
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .inativar-btn {
+            padding: 6px 12px;
+            background-color: #c0392b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .inativar-btn:hover {
+            background-color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Funcionários Ativos</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Cargo</th>
+                <th>Data de Contratação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for f in funcionarios %}
+            <tr>
+                <td>{{ f['id'] }}</td>
+                <td>{{ f['nome'] }}</td>
+                <td>{{ f['cpf'] }}</td>
+                <td>{{ f['cargo'] }}</td>
+                <td>{{ f['data_contratacao'] }}</td>
+                    
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

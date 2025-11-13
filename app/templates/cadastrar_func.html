@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Funcionário</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            padding: 40px;
+        }
+
+        .container {
+            background-color: white;
+            max-width: 400px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #34495e;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Cadastrar Funcionário</h2>
+
+    {% if erro %}
+        <div class="error-message">{{ erro }}</div>
+    {% endif %}
+
+    <form action="/cadastrar_funcionario" method="POST">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" value="{{ nome or '' }}" required>
+
+        <label for="cpf">CPF:</label>
+        <input type="text" id="cpf" name="cpf" maxlength="14" value="{{ cpf or '' }}" required oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+
+        <label for="cargo">Cargo:</label>
+        <select id="cargo" name="cargo" required>
+            <option value="">Selecione</option>
+            <option value="admin" {% if cargo == 'admin' %}selected{% endif %}>Administrador</option>
+            <option value="operador" {% if cargo == 'operador' %}selected{% endif %}>Operador</option>
+        </select>
+
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="senha" value="{{ senha or '' }}" required>
+
+        <button type="submit">Cadastrar</button>
+    </form>
+</div>
+
+</body>
+</html>
