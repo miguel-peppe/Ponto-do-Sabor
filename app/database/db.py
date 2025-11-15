@@ -28,7 +28,7 @@ def db_init():
         ''')
         conn.commit()
 
-def add_funcionario(nome, cpf, cargo, senha_hash, data_contratacao=None, ativo=1):
+def add_funcionario(nome, cpf : int, cargo, senha_hash, data_contratacao=None, ativo=1):
     if data_contratacao is None:
         data_contratacao = date.today().isoformat()  # YYYY-MM-DD
 

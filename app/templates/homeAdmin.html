@@ -9,8 +9,9 @@
 </head>
 <body>
     <h1>Bem-vindo!  {{ current_user }}</h1>
-    <a href="{{ url_for('cadastrar') }}">Cadastrar Funcionário</a>
-    <a href="{{ url_for('excluir') }}">Excluir</a>
-    <a href="{{ url_for('listar') }}">Listar</a>
+    <a href="{{ url_for('admin.cadastrar') }}">Cadastrar Funcionário</a><br>
+    <a href="{{ url_for('admin.excluir') }}">Excluir</a><br>
+    <a href="{{ url_for('admin.listar') }}">Listar</a><br>
+    <a href="{{ url_for('logout') }}">Sair</a><br>
 </body>
 </html>

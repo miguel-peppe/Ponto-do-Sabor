@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, request, flash
+from flask import Flask, Blueprint, render_template, url_for, redirect, request, flash
 from datetime import datetime
 from database.db import *
 from sqlite3 import *

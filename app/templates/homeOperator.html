@@ -120,13 +120,14 @@
   <div class="container">
 
     <div class="actions">
-      <button id="openNote" class="btn">Nova Nota</button>
+      <button id="openNote" class="btn ">Nova Nota</button>
       <button id="toggleNotes" class="btn btn--ghost">Ver Notas</button>
+      <button id="logout" class="btn btn--danger">Sair</button>
     </div>
 
     <!-- Editor de Nova Nota -->
     <section id="noteEditor" class="notes-panel" hidden>
-      <div class="notes-header">
+      <div class="notes-header"> 
         <span class="notes-title">Nova Nota</span>
         <button id="noteClose" class="iconbtn" aria-label="Fechar">✕</button>
       </div>
@@ -171,15 +172,25 @@
   </div>
 
   <script>
-    const openNoteBtn   = document.getElementById('openNote');
-    const toggleNotesBtn= document.getElementById('toggleNotes');
-    const noteEditor    = document.getElementById('noteEditor');
-    const notesPanel    = document.getElementById('notesPanel');
-    const noteCloseBtn  = document.getElementById('noteClose');
-    const notesCloseBtn = document.getElementById('notesClose');
+    const openNoteBtn    = document.getElementById('openNote');
+    const toggleNotesBtn = document.getElementById('toggleNotes');
+    const logoutButton   = document.getElementById('logout')
+    const noteEditor     = document.getElementById('noteEditor');
+    const notesPanel     = document.getElementById('notesPanel');
+    const noteCloseBtn   = document.getElementById('noteClose');
+    const notesCloseBtn  = document.getElementById('notesClose');
 
     openNoteBtn.addEventListener('click', () => {
-      noteEditor.hidden = false;
+      const wasHidden = noteEditor.hidden;
+      noteEditor.hidden = !wasHidden;
+      notesPanel.hidden = true; // sempre esconde o painel de notas quando abre nova nota
+    });
+
+    noteCloseBtn.addEventListener('click', () => {
+      noteEditor.hidden = true;
+    });
+
+    notesCloseBtn.addEventListener('click', () => {
       notesPanel.hidden = true;
     });
 
@@ -188,8 +199,11 @@
       noteEditor.hidden = true;
     });
 
-    noteCloseBtn.addEventListener('click', () => { noteEditor.hidden = true; });
-    notesCloseBtn.addEventListener('click', () => { notesPanel.hidden = true; });
+    logoutButton.addEventListener('click', () => {
+      window.location.href = "/logout";
+    })
+
+
   </script>
 </body>
 </html>
