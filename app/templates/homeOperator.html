@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
-  <title>Notas - Operador</title>
+  <title>Operador - Notas e Pedidos</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
@@ -15,7 +15,12 @@
       --danger: #e74c3c;
       --danger-ink: #fff;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       background: var(--bg);
@@ -24,11 +29,18 @@
       padding: 2rem;
     }
 
-    .container { max-width: 800px; margin: 0 auto; }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
 
+    /* Ações topo */
     .actions {
-      display: flex; gap: 10px; flex-wrap: wrap;
-      justify-content: flex-start; margin-bottom: 1rem;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      margin-bottom: 1.5rem;
     }
 
     .btn {
@@ -39,8 +51,14 @@
       border-radius: 8px;
       cursor: pointer;
       font-weight: 700;
+      font-size: 0.95rem;
       transition: transform .1s ease, opacity .2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
     }
+
     .btn:hover { opacity: .9; }
     .btn:active { transform: translateY(1px); }
 
@@ -53,15 +71,35 @@
     .btn--danger {
       background: var(--danger);
       color: var(--danger-ink);
-      border: 1px solid rgba(0,0,0,.0);
+      border: 1px solid transparent;
     }
+
     .btn--danger.btn--ghost {
       background: #fff;
       color: var(--danger);
-      border-color: rgba(231,76,60,.35);
+      border-color: rgba(231, 76, 60, .35);
     }
 
-    .notes-panel {
+    .btn--success {
+      background: #27ae60;
+      color: #fff;
+      border: 1px solid transparent;
+    }
+
+    .btn--success.btn--ghost {
+      background: #fff;
+      color: #27ae60;
+      border-color: rgba(39, 174, 96, .35);
+    }
+
+    .btn--sm {
+      padding: 0.45em 0.8em;
+      font-size: 0.8rem;
+      border-radius: 6px;
+    }
+
+    /* Painel genérico (Notas / Pedidos) */
+    .panel {
       background: var(--card);
       border: 1px solid var(--line);
       border-radius: 12px;
@@ -70,111 +108,374 @@
       margin-bottom: 20px;
     }
 
-    .notes-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: .8rem 1.2rem; border-bottom: 1px solid var(--line);
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: .8rem 1.2rem;
+      border-bottom: 1px solid var(--line);
     }
 
-    .notes-title { font-size: 1.1rem; font-weight: 600; }
+    .panel-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
 
     .iconbtn {
-      background: none; border: none; font-size: 1.2rem;
-      cursor: pointer; color: var(--muted);
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--muted);
     }
     .iconbtn:hover { color: var(--ink); }
 
+    /* NOTAS */
+    .notes-panel .panel-body {
+      padding: 1rem;
+    }
+
     .notes-list {
-      list-style: none; max-height: 420px; overflow-y: auto;
+      list-style: none;
+      max-height: 420px;
+      overflow-y: auto;
     }
 
     .notes-item {
-      padding: 1rem 1.2rem; border-bottom: 1px solid var(--line);
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--line);
     }
-    .notes-item:last-child { border-bottom: none; }
+
+    .notes-item:last-child {
+      border-bottom: none;
+    }
 
     .notes-item__row {
-      display: flex; gap: 12px; align-items: flex-start; justify-content: space-between;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      justify-content: space-between;
     }
-    .notes-item__text { flex: 1 1 auto; min-width: 0; }
-    .notes-item__meta { font-size: .85rem; color: var(--muted); margin-bottom: .25rem; }
-    .notes-item__content { white-space: pre-wrap; word-wrap: break-word; }
+
+    .notes-item__text {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .notes-item__meta {
+      font-size: .85rem;
+      color: var(--muted);
+      margin-bottom: .25rem;
+    }
+
+    .notes-item__content {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
 
     .notes-item__actions {
-      flex: 0 0 auto; display: flex; gap: 8px; align-items: center;
+      flex: 0 0 auto;
+      display: flex;
+      gap: 8px;
+      align-items: center;
     }
 
     .notes-item--empty {
-      color: var(--muted); text-align: center; padding: 1.5rem;
+      color: var(--muted);
+      text-align: center;
+      padding: 1.5rem;
     }
 
     .textarea {
-      width: 100%; padding: 12px; border-radius: 8px;
-      border: 1px solid var(--line); resize: vertical;
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      resize: vertical;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size: 14px;
     }
-    .textarea:focus { border-color: var(--brand); outline: none; }
+
+    .textarea:focus {
+      border-color: var(--brand);
+      outline: none;
+    }
+
+    /* PEDIDOS */
+    .orders-panel .panel-body {
+      padding: 1.2rem;
+    }
+
+    .orders-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.1fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .orders-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .orders-column-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: .8rem;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+    }
+
+    .form-field label {
+      font-weight: 500;
+    }
+
+    .form-input,
+    .form-textarea {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      border-color: var(--brand);
+      outline: none;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+      font-size: 0.9rem;
+    }
+
+    .radio-group label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .orders-submit {
+      margin-top: .8rem;
+      text-align: right;
+    }
+
+    .orders-list-wrapper {
+      max-height: 420px;
+      overflow-y: auto;               /* box com rolamento */
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: .8rem;
+      background: #fafbff;
+    }
+
+    .orders-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+      font-size: 0.9rem;
+    }
+
+    .orders-list-item {
+      padding-bottom: .6rem;
+      border-bottom: 1px dashed var(--line);
+    }
+
+    .orders-list-item:last-child {
+      border-bottom: none;
+    }
+
+    .order-name {
+      font-weight: 600;
+    }
+
+    .order-price {
+      font-weight: 500;
+    }
+
+    .order-note,
+    .order-observacao,
+    .order-payment {
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .order-actions {
+      margin-top: .5rem;
+      display: flex;
+      gap: .5rem;
+      justify-content: flex-end;
+    }
+
   </style>
 </head>
 <body>
   <div class="container">
 
     <div class="actions">
-      <button id="openNote" class="btn ">Nova Nota</button>
+      <button id="openNote" class="btn">Nova Nota</button>
       <button id="toggleNotes" class="btn btn--ghost">Ver Notas</button>
       <button id="logout" class="btn btn--danger">Sair</button>
     </div>
 
-    <!-- Editor de Nova Nota -->
-    <section id="noteEditor" class="notes-panel" hidden>
-      <div class="notes-header"> 
-        <span class="notes-title">Nova Nota</span>
-        <button id="noteClose" class="iconbtn" aria-label="Fechar">✕</button>
-      </div>
-      <form action="/salvarNota" method="POST" style="padding:1rem;">
-        <textarea name="conteudo" class="textarea" rows="5" required placeholder="Digite sua anotação..."></textarea>
-        <div style="margin-top:10px; text-align:right;">
-          <button type="submit" class="btn">Salvar</button>
+    <main>
+      <h2>Bem vindo! {{ user.nome }}</h2>
+      <!-- Editor de Nova Nota -->
+      <section id="noteEditor" class="panel notes-panel" hidden>
+        <header class="panel-header">
+          <span class="panel-title">Nova Nota</span>
+          <button id="noteClose" class="iconbtn" aria-label="Fechar">✕</button>
+        </header>
+        <div class="panel-body">
+          <form action="/salvarNota" method="POST">
+            <textarea name="conteudo" class="textarea" rows="5" required placeholder="Digite sua anotação..."></textarea>
+            <div style="margin-top:10px; text-align:right;">
+              <button type="submit" class="btn">Salvar</button>
+            </div>
+          </form>
         </div>
-      </form>
-    </section>
+      </section>
 
-    <!-- Painel de Notas -->
-    <section id="notesPanel" class="notes-panel" hidden>
-      <div class="notes-header">
-        <span class="notes-title">Notas Salvas</span>
-        <button id="notesClose" class="iconbtn" aria-label="Fechar">✕</button>
-      </div>
-      <ul class="notes-list">
-        {% if notas %}
-          {% for nota in notas %}
-            <li class="notes-item">
-              <div class="notes-item__row">
-                <div class="notes-item__text">
-                  <div class="notes-item__meta"><strong>{{ nota['data_mod'] }}</strong></div>
-                  <div class="notes-item__content">{{ nota['conteudo'] }}</div>
+      <!-- Painel de Notas -->
+      <section id="notesPanel" class="panel notes-panel" hidden>
+        <header class="panel-header">
+          <span class="panel-title">Notas Salvas</span>
+          <button id="notesClose" class="iconbtn" aria-label="Fechar">✕</button>
+        </header>
+        <ul class="notes-list">
+          {% if notas %}
+            {% for nota in notas %}
+              <li class="notes-item">
+                <div class="notes-item__row">
+                  <div class="notes-item__text">
+                    <div class="notes-item__meta">
+                      <strong>{{ nota['data_mod'] }}</strong>
+                    </div>
+                    <div class="notes-item__content">{{ nota['conteudo'] }}</div>
+                  </div>
+
+                  <!-- AÇÃO: Remover nota (POST /removerNota) -->
+                  <form class="notes-item__actions" action="/removerNota" method="POST">
+                    <input type="hidden" name="id" value="{{ nota['id'] }}">
+                    <button type="submit" class="btn btn--ghost btn--danger btn--sm" title="Remover">Remover</button>
+                  </form>
+                </div>
+              </li>
+            {% endfor %}
+          {% else %}
+            <li class="notes-item notes-item--empty">Nenhuma nota encontrada.</li>
+          {% endif %}
+        </ul>
+      </section>
+
+      <!-- Painel de Pedidos -->
+      <section class="panel orders-panel">
+        <header class="panel-header">
+          <span class="panel-title">Pedidos</span>
+        </header>
+        <div class="panel-body">
+          <div class="orders-grid">
+            <!-- Coluna Esquerda: Criar Pedido -->
+            <div class="orders-column orders-column--form">
+              <h2 class="orders-column-title">Criar Pedido</h2>
+              <form action="/cadastrarPedido" method="POST">
+                <div class="form-field">
+                  <label for="nome">Nome do Item:</label>
+                  <input type="text" id="nome" name="nome" class="form-input" required>
                 </div>
 
-                <!-- AÇÃO: Remover nota (POST /removerNota) -->
-                <form class="notes-item__actions" action="/removerNota" method="POST">
-                  <input type="hidden" name="id" value="{{ nota['id'] }}">
-                  <button type="submit" class="btn btn--ghost btn--danger" title="Remover">Remover</button>
-                </form>
-              </div>
-            </li>
-          {% endfor %}
-        {% else %}
-          <li class="notes-item notes-item--empty">Nenhuma nota encontrada.</li>
-        {% endif %}
-      </ul>
-    </section>
+                <div class="form-field">
+                  <label for="preco">Preço (R$):</label>
+                  <input type="number" id="preco" name="preco" class="form-input" step="0.01" min="0" required>
+                </div>
 
+                <div class="form-field">
+                  <label for="nota">Nota (opcional):</label>
+                  <textarea id="nota" name="nota" class="form-textarea" rows="3" placeholder="Digite observações..."></textarea>
+                </div>
+
+                <div class="form-field">
+                  <label>Forma de Pagamento:</label>
+                  <div class="radio-group">
+                    <label><input type="radio" name="formaDePagamento" value="dinheiro" required> Dinheiro</label>
+                    <label><input type="radio" name="formaDePagamento" value="cartao" required> Cartão</label>
+                    <label><input type="radio" name="formaDePagamento" value="pix" required> Pix</label>
+                  </div>
+                </div>
+
+                <div class="orders-submit">
+                  <button type="submit" class="btn">Cadastrar</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Coluna Direita: Listagem de Pedidos -->
+            <div class="orders-column orders-column--list">
+              <h2 class="orders-column-title">Pedidos em andamento</h2>
+              <div class="orders-list-wrapper">
+                <ul class="orders-list">
+                  {% for pedido in pedidos %}
+                    <li class="orders-list-item">
+                      <div class="order-name">
+                        {{ pedido.nome }} <span class="order-price">- R$ {{ "%.2f"|format(pedido.preco) }}</span>
+                      </div>
+                      {% if pedido.nota %}
+                        <div class="order-note">Nota: {{ pedido.nota }}</div>
+                      {% endif %}
+                      <div class="order-payment">Forma de Pagamento: {{ pedido.formaDePagamento }}</div>
+                      {% if pedido.observacao %}
+                        <div class="order-observacao">Observação: {{ pedido.observacao }}</div>
+                        {% endif %}
+                      <div class="order-observacao">
+                        Hora: {{ pedido.dataCriacao[11:16] }}
+                      </div>
+
+
+                      <div class="order-actions">
+                        <form action="/fecharPedido" method="POST">
+                          <input type="hidden" name="id" value="{{ pedido.id }}">
+                          <button type="submit" class="btn btn--success btn--sm">Fechar</button>
+                        </form>
+                        <form action="/cancelarPedido" method="POST">
+                          <input type="hidden" name="id" value="{{ pedido.id }}">
+                          <button type="submit" class="btn btn--ghost btn--danger btn--sm">Cancelar</button>
+                        </form>
+                      </div>
+                    </li>
+                  {% else %}
+                    <li class="orders-list-item">Nenhum pedido cadastrado.</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
   </div>
 
   <script>
     const openNoteBtn    = document.getElementById('openNote');
     const toggleNotesBtn = document.getElementById('toggleNotes');
-    const logoutButton   = document.getElementById('logout')
+    const logoutButton   = document.getElementById('logout');
     const noteEditor     = document.getElementById('noteEditor');
     const notesPanel     = document.getElementById('notesPanel');
     const noteCloseBtn   = document.getElementById('noteClose');
@@ -201,9 +502,7 @@
 
     logoutButton.addEventListener('click', () => {
       window.location.href = "/logout";
-    })
-
-
+    });
   </script>
 </body>
 </html>

@@ -5,6 +5,7 @@ from database.db import *
 from flask_login import LoginManager
 from blueprints.admin import admin_bp
 from blueprints.operator import operator_bp
+from werkzeug.security import check_password_hash
 
 app = Flask(__name__)
 app.secret_key = 'chave-secreta'  
@@ -26,7 +27,7 @@ def login():
         cpf = request.form['cpf']
         senha = request.form['senha']
         
-        conn = get_connect()
+        conn = get_some_connection('funcionario')
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM funcionario WHERE cpf = ? AND ativo = 1", (cpf,))
         user = cursor.fetchone()
@@ -52,7 +53,7 @@ def logout():
 
 @login_manager.user_loader
 def load_user(user_id):
-    conn = get_connect()
+    conn = get_some_connection('funcionario')
     cursor = conn.cursor()
     cursor.execute("SELECT id, nome, cpf, cargo FROM funcionario WHERE id = ?", (user_id,))
     user = cursor.fetchone()
@@ -64,7 +65,5 @@ def load_user(user_id):
 
 """======================== runner' ========================"""
 if __name__ == "__main__":
-    db_init()  # Cria tabela se não existir
-    db_init_note()
-    initPedido()
+    db_init_all()  # Cria tabela se não existir
     app.run(debug=True, port=8080)

@@ -4,9 +4,9 @@ from core.decorators import *
 
 admin_bp = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
 
-# @login_required
-# @admin_required
 @admin_bp.route('/homeAdmin')
+@login_required
+@admin_required
 def homeAdmin():
     return render_template('homeAdmin.html', current_user=current_user.nome)
 
@@ -43,7 +43,7 @@ def excluir():
 def excluir_funcionario():
     id = request.form['id']
     
-    conn = get_connect()
+    conn = get_some_connection('funcionario')
     cursor = conn.cursor()
     cursor.execute('UPDATE funcionario SET ativo = 0 WHERE id = ?', (id,))
     conn.commit()
@@ -52,7 +52,7 @@ def excluir_funcionario():
 
 @admin_bp.route('/listar')
 def listar():
-    conn = get_connect()
+    conn = get_some_connection('funcionario')
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM funcionario WHERE ativo = 1')
     funcionarios = cursor.fetchall()

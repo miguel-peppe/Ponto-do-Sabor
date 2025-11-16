@@ -1,11 +1,8 @@
 from flask import Flask, Blueprint, render_template, url_for, redirect, request, flash
 from datetime import datetime
-from database.db import *
 from sqlite3 import *
-from datetime import date
+from datetime import date, datetime
 from flask_login import UserMixin, login_user, logout_user, current_user, login_required
-from werkzeug.security import generate_password_hash, check_password_hash
-
 
 """"""
 def validar_cpf(cpf):
