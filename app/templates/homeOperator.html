@@ -98,7 +98,7 @@
       border-radius: 6px;
     }
 
-    /* Painel genérico (Notas / Pedidos) */
+    /* Painel genérico (Notas / Pedidos / Sangria) */
     .panel {
       background: var(--card);
       border: 1px solid var(--line);
@@ -199,6 +199,11 @@
     .textarea:focus {
       border-color: var(--brand);
       outline: none;
+    }
+
+    /* SANGRIA */
+    .sangria-panel .panel-body {
+      padding: 1rem;
     }
 
     /* PEDIDOS */
@@ -332,11 +337,14 @@
     <div class="actions">
       <button id="openNote" class="btn">Nova Nota</button>
       <button id="toggleNotes" class="btn btn--ghost">Ver Notas</button>
+      <!-- botão de sangria vermelho -->
+      <button id="sangria" class="btn btn--danger">Sangria</button>
       <button id="logout" class="btn btn--danger">Sair</button>
     </div>
 
     <main>
       <h2>Bem vindo! {{ user.nome }}</h2>
+
       <!-- Editor de Nova Nota -->
       <section id="noteEditor" class="panel notes-panel" hidden>
         <header class="panel-header">
@@ -348,6 +356,41 @@
             <textarea name="conteudo" class="textarea" rows="5" required placeholder="Digite sua anotação..."></textarea>
             <div style="margin-top:10px; text-align:right;">
               <button type="submit" class="btn">Salvar</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Painel de Sangria -->
+      <section id="sangriaPanel" class="panel sangria-panel" hidden>
+        <header class="panel-header">
+          <span class="panel-title">Registrar Sangria</span>
+          <button id="sangriaClose" class="iconbtn" aria-label="Fechar">✕</button>
+        </header>
+        <div class="panel-body">
+          <form action="/registrarSangria" method="POST">
+            <div class="form-field">
+              <label for="valorSangria">Valor (R$):</label>
+              <input type="number"
+                     id="valorSangria"
+                     name="valor"
+                     class="form-input"
+                     step="0.01"
+                     min="0.01"
+                     required>
+            </div>
+
+            <div class="form-field">
+              <label for="motivoSangria">Motivo:</label>
+              <input type="text"
+                     id="motivoSangria"
+                     name="motivo"
+                     class="form-input"
+                     required>
+            </div>
+
+            <div style="margin-top:10px; text-align:right;">
+              <button type="submit" class="btn btn--danger">Registrar Sangria</button>
             </div>
           </form>
         </div>
@@ -442,11 +485,10 @@
                       <div class="order-payment">Forma de Pagamento: {{ pedido.formaDePagamento }}</div>
                       {% if pedido.observacao %}
                         <div class="order-observacao">Observação: {{ pedido.observacao }}</div>
-                        {% endif %}
+                      {% endif %}
                       <div class="order-observacao">
                         Hora: {{ pedido.dataCriacao[11:16] }}
                       </div>
-
 
                       <div class="order-actions">
                         <form action="/fecharPedido" method="POST">
@@ -478,13 +520,19 @@
     const logoutButton   = document.getElementById('logout');
     const noteEditor     = document.getElementById('noteEditor');
     const notesPanel     = document.getElementById('notesPanel');
+
+    const sangriaButton  = document.getElementById('sangria');
+    const sangriaPanel   = document.getElementById('sangriaPanel');
+    const sangriaCloseBtn = document.getElementById('sangriaClose');
+
     const noteCloseBtn   = document.getElementById('noteClose');
     const notesCloseBtn  = document.getElementById('notesClose');
 
     openNoteBtn.addEventListener('click', () => {
       const wasHidden = noteEditor.hidden;
       noteEditor.hidden = !wasHidden;
-      notesPanel.hidden = true; // sempre esconde o painel de notas quando abre nova nota
+      notesPanel.hidden = true;   // esconde painel de notas
+      sangriaPanel.hidden = true; // esconde painel de sangria
     });
 
     noteCloseBtn.addEventListener('click', () => {
@@ -498,6 +546,18 @@
     toggleNotesBtn.addEventListener('click', () => {
       notesPanel.hidden = !notesPanel.hidden;
       noteEditor.hidden = true;
+      sangriaPanel.hidden = true;
+    });
+
+    sangriaButton.addEventListener('click', () => {
+      const wasHidden = sangriaPanel.hidden;
+      sangriaPanel.hidden = !wasHidden;
+      noteEditor.hidden = true;
+      notesPanel.hidden = true;
+    });
+
+    sangriaCloseBtn.addEventListener('click', () => {
+      sangriaPanel.hidden = true;
     });
 
     logoutButton.addEventListener('click', () => {

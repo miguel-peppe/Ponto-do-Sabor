@@ -82,11 +82,23 @@ def cadastroPedido():
         return redirect(url_for('operator.homeOperator'))
     return redirect(url_for('operator.homeOperator'))
 
-
-
 @operator_bp.route('/fecharPedido', methods=['GET', 'POST'])
 @login_required
 def fecharPedido():
     pedido_id = request.form.get('id')
     executar_sql('UPDATE vendas SET status = ? WHERE id = ?', ("fechado", pedido_id))
     return redirect(url_for('operator.homeOperator'))
+
+@operator_bp.route('/registrarSangria', methods=['GET', 'POST'])
+@login_required
+def registrarSangria():
+    if request.method == 'POST':
+        valorSangria = request.form.get('valor')
+        motivo       = request.form.get('motivo')
+        usuario      = current_user.nome
+        data         = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+        executar_sql('INSERT INTO sangrias (valor, motivo, usuario, data) VALUES (?, ?, ?, ?)',
+                    (valorSangria, motivo, usuario, data))
+        
+        return redirect(url_for('operator.homeOperator'))
+    return redirect(url_for("operator.homeOperator"))
