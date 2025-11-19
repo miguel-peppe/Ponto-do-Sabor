@@ -42,8 +42,6 @@ def homeOperator():
         user=current_user
     )
 
-
-
 @operator_bp.route('/salvarNota', methods=['POST'])
 @login_required
 def mandarNota():
